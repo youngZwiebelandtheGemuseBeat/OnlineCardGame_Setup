@@ -123,6 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &156113577 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1624578953470195703, guid: 9df005b72d36640c2ae92899d28f170f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1717920957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978d04a61a39c40a78f712d5da9df46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &257283677
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,10 +286,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 575324482}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
+      - m_Target: {fileID: 156113577}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: Connect
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -560,18 +572,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bff4858ddc7cb42da81560b094fa1590, type: 3}
---- !u!114 &575324482 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9096344602048514703, guid: bff4858ddc7cb42da81560b094fa1590,
-    type: 3}
-  m_PrefabInstance: {fileID: 490681950}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d81cbbd9468646a0b271b7f5fdc0196, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &629839904
 GameObject:
   m_ObjectHideFlags: 0
