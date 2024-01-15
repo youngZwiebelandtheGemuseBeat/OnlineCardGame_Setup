@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     {
         Message msg = Message.Create(MessageSendMode.Reliable, ServerToClientMsg.ApproveLogin);
         msg.AddBool(approve);
-        NetworkManager.Instance.Server.Send(msg, Id);
+        NetworkEvents.Send(msg, Id);
     }
 
 

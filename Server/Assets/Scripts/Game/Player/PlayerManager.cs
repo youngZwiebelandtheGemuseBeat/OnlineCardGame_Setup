@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : Singleton<PlayerManager>
+public class PlayerManager : MonoBehaviour /* Singleton<PlayerManager> */
 {
     [SerializeField] private GameObject m_PlayerPrefab;
     private static GameObject s_PlayerPrefab;
@@ -24,9 +24,9 @@ public class PlayerManager : Singleton<PlayerManager>
         return false;
     }
 
-    protected override void Awake()
+    private /* protected override */ void Awake()
     {
-        base.Awake();
+        // base.Awake();
         s_PlayerPrefab = m_PlayerPrefab;
     }
 

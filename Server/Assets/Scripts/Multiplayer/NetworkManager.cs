@@ -1,3 +1,4 @@
+using System;
 using InexperiencedDeveloper.Core;
 using Riptide;
 using Riptide.Utils;
@@ -15,22 +16,53 @@ public enum ClientToServerMsg : ushort
     RequestLogin,
 }
 
-public class NetworkManager : Singleton<NetworkManager>
+public class NetworkManager : MonoBehaviour /* Singleton<NetworkManager> */
 {
-    protected override void Awake()
+    [SerializeField]
+    private NetworkSettingsSO m_netSettings;
+    
+    private /* protected override */ void Awake()
     {
-        base.Awake();
+        // base.Awake();
         RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, true);
     }
 
-    public Server Server;
-    [SerializeField] private ushort m_Port = 7777;
-    [SerializeField] private ushort m_MaxPlayers = 10;
+    public Server Server { get; private set; }
+    // [SerializeField] private ushort m_Port = 7777;
+    // [SerializeField] private ushort m_MaxPlayers = 10;
 
     private void Start()
     {
         Server = new Server();
-        Server.Start(m_Port, m_MaxPlayers);
+        Server.Start(m_netSettings.Port, m_netSettings.MaxPlayers);
+        Subscribe();
+    }
+
+    private void OnDestroy()
+    {
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        NetworkEvents.SendMessageToPlayer += SendToPlayer;
+        NetworkEvents.SendMessageToAll += SendToAll;
+    }
+
+    private void SendToPlayer(Message message, ushort id)
+    {
+        Server.Send(message, id);
+    }
+
+    private void SendToAll(Message message)
+    {
+        Server.SendToAll(message);
+    }
+
+    private void Unsubscribe()
+    {
+        NetworkEvents.SendMessageToPlayer -= SendToPlayer;
+        NetworkEvents.SendMessageToAll -= SendToAll;
     }
 
     private void FixedUpdate()
