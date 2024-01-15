@@ -1,7 +1,7 @@
 using UnityEngine;
 
-namespace InexperiencedDeveloper.Core
-{
+// namespace InexperiencedDeveloper.Core
+// {
     public class Singleton<T> : MonoBehaviour where T : Component
     {
         protected static T instance;
@@ -46,4 +46,4 @@ namespace InexperiencedDeveloper.Core
                 instance = null;
         }
     }
-}
+// }

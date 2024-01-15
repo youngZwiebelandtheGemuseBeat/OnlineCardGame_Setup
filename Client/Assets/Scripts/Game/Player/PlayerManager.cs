@@ -1,11 +1,12 @@
-using InexperiencedDeveloper.Core;
+// using InexperiencedDeveloper.Core;
 using Riptide;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : Singleton<PlayerManager>
+public class PlayerManager : MonoBehaviour /* Singleton<PlayerManager> */
 {
+    [SerializeField] private NetworkSettingsSO m_netSettings;
     [SerializeField] private GameObject m_PlayerPrefab;
     private static GameObject s_PlayerPrefab;
     private static Dictionary<ushort, Player> s_Players = new Dictionary<ushort, Player>();
@@ -24,20 +25,38 @@ public class PlayerManager : Singleton<PlayerManager>
         return false;
     }
 
-    public static Player LocalPlayer => GetPlayer(NetworkManager.Instance.Client.Id);
-    public static bool IsLocalPlayer(ushort id) => id == LocalPlayer.Id;
+    // public Player LocalPlayer => GetPlayer(m_netSettings.LocalId);
+    // public bool IsLocalPlayer(ushort id) => id == LocalPlayer.Id;
+    private static ushort s_localId = ushort.MaxValue;
 
-    protected override void Awake()
+    /* protected override */ private void Awake()
     {
-        base.Awake();
+        // base.Awake();
         s_PlayerPrefab = m_PlayerPrefab;
+        Subscribe();
     }
 
-    public void SpawnInitialPlayer(string username)
+    private void OnDestroy()
+    {
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        NetworkEvents.ConnectSuccess += SpawnInitialPlayer;
+    }
+
+    private void Unsubscribe()
+    {
+        NetworkEvents.ConnectSuccess -= SpawnInitialPlayer;
+    }
+
+    public void SpawnInitialPlayer(ushort id, string username)
     {
         Player player = Instantiate(s_PlayerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
         player.name = $"{username} -- LOCAL PLAYER (WAITING FOR SERVER)";
-        ushort id = NetworkManager.Instance.Client.Id;
+        // ushort id = NetworkManager.Instance.Client.Id;
+        s_localId = id;
         player.Init(id, username, true);
         s_Players.Add(id, player);
         player.RequestInit();
@@ -45,7 +64,8 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private static void InitializeLocalPlayer()
     {
-        LocalPlayer.name = $"{LocalPlayer.Username} -- {LocalPlayer.Id} -- LOCAL";
+        Player local = s_Players[s_localId];
+        local.name = $"{local.Username} -- {local.Id} -- LOCAL";
     }
 
     // MESSAGE RECEIVING
